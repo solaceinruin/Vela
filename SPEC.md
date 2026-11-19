@@ -2325,6 +2325,9 @@ unit without Android Auto. `DrivingMode.on` (`ui/DrivingMode.kt`) is memory only
 - The speed box (`NavCorner`) shows from the first fix, standing still too, above the bar in
   portrait (the bar's measured height, `DrivingBar.heightPx`, plus 16 dp) and right of it
   in landscape (`DrivingBar.rightPx` plus 10 dp), under "Show speed and speed limit".
+- In the speed box your speed is blue (`#1A73E8`, `#8AB4F8` in the dark theme) and the posted
+  limit red (`#D32F2F`: the number, and the edge of the "SPEED LIMIT" rectangle). Your speed
+  turns `#E8514A` past 3 mph or 5 km/h over the limit.
 - `SearchGates.drivingChrome` says when the chrome draws: the mode on, nothing owning the
   screen (no drive, search page, place, results, directions, steps, pick, replay, arrival,
   Street View, area pick, drawing or resume prompt). `fabChromeOk` is false while it draws, so
@@ -6041,8 +6044,8 @@ the same `:core` singletons as the phone (`CarDeps`).
   on the car screen" (`CarSpeed`, `car_speed_on`, default off, user 2026-10-15) draws the car's
   own badge; off, the car shows the limit sign alone, in the badge's corner, since a car has a
   speedometer. The spoken speeding alert is a separate setting. The car's limit sign follows the
-  phone's: the "SPEED LIMIT" rectangle in miles, the red-ring disc in kilometers, and a red
-  number past 3 mph or 5 km/h over.
+  phone's: the "SPEED LIMIT" rectangle with a red edge in miles, the red-ring disc in
+  kilometers, a red limit number, and a blue speed that turns red past 3 mph or 5 km/h over.
 - The guidance voice is band-limited by the protocol: the Android Auto guidance stream is 16 kHz
   mono.
 

@@ -6846,7 +6846,9 @@ private fun SpeedWidget(
     val tol = if (imperial) 3f else 5f
     val over = limitDisp != null && speedDisp > limitDisp + tol
     val overColor = Color(0xFFE8514A)
-    val signInk = Color(0xFF202124)
+    // Your speed reads blue and the posted limit red, so the two numbers never mix at a glance.
+    val speedBlue = if (dark) Color(0xFF8AB4F8) else Color(0xFF1A73E8)
+    val limitRed = Color(0xFFD32F2F)
 
     // ONE rounded rectangle in both states (user 2026-07-14): without a posted limit it's a
     // snug box around just the speed, and when a limit is known the box simply WIDENS as the
@@ -6869,7 +6871,7 @@ private fun SpeedWidget(
                     Surface(
                         shape = RoundedCornerShape(7.dp),
                         color = Color.White,
-                        border = BorderStroke(1.5.dp, signInk),
+                        border = BorderStroke(1.5.dp, limitRed),
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -6877,7 +6879,7 @@ private fun SpeedWidget(
                         ) {
                             Text("SPEED", color = Color(0xFF3C4043), fontSize = 7.sp, fontWeight = FontWeight.SemiBold, lineHeight = 8.sp)
                             Text("LIMIT", color = Color(0xFF3C4043), fontSize = 7.sp, fontWeight = FontWeight.SemiBold, lineHeight = 8.sp)
-                            Text("$limitDisp", color = if (over) overColor else signInk, fontSize = 19.sp, fontWeight = FontWeight.Bold, lineHeight = 21.sp)
+                            Text("$limitDisp", color = limitRed, fontSize = 19.sp, fontWeight = FontWeight.Bold, lineHeight = 21.sp)
                         }
                     }
                 } else {
@@ -6888,13 +6890,13 @@ private fun SpeedWidget(
                         modifier = Modifier.size(42.dp),
                     ) {
                         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                            Text("$limitDisp", color = if (over) overColor else signInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                            Text("$limitDisp", color = limitRed, fontSize = 17.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("$value", fontSize = 25.sp, fontWeight = FontWeight.Bold, lineHeight = 27.sp, color = if (over) overColor else SheetPalette.ink(dark))
+                Text("$value", fontSize = 25.sp, fontWeight = FontWeight.Bold, lineHeight = 27.sp, color = if (over) overColor else speedBlue)
                 Text(unit, fontSize = 9.sp, color = SheetPalette.dim(dark), lineHeight = 10.sp)
             }
         }

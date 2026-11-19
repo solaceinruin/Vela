@@ -165,8 +165,9 @@ class CarMapRenderer(
         }
 
         const val RECENTER_MS = 6000L // auto-recenter this long after a pan
-        val LIMIT_INK = Color.parseColor("#111111")
+        val LIMIT_RED = Color.parseColor("#d32f2f") // the posted limit, as on the phone
         val LIMIT_OVER = Color.parseColor("#e8514a") // the phone's over-the-limit red
+        val SPEED_BLUE = Color.parseColor("#8ab4f8") // your speed, the phone's dark-theme blue
         val WORLD_CENTER = LatLng(20.0, 0.0)
         const val WORLD_ZOOM = 1.5
         const val TICK_MS = 70L      // render-loop cadence (snapshots gate the real fps below this)
@@ -304,10 +305,10 @@ class CarMapRenderer(
         color = Color.parseColor("#d32f2f"); style = Paint.Style.STROKE; strokeWidth = 7f
     }
     private val limitNum = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#111111"); textAlign = Paint.Align.CENTER; textSize = 36f; isFakeBoldText = true
+        color = LIMIT_RED; textAlign = Paint.Align.CENTER; textSize = 36f; isFakeBoldText = true
     }
     private val limitEdge = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#202124"); style = Paint.Style.STROKE; strokeWidth = 3f
+        color = LIMIT_RED; style = Paint.Style.STROKE; strokeWidth = 3f
     }
     private val limitWord = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.parseColor("#3c4043"); textAlign = Paint.Align.CENTER; textSize = 13f; isFakeBoldText = true
@@ -1055,7 +1056,8 @@ class CarMapRenderer(
 
     /** Bottom-right current-speed badge (km/h or mph per the user's units), plus the posted limit
      *  to its left when it is known: the US "SPEED LIMIT" sign in miles, the round red-ring sign
-     *  in kilometers, the same choice the phone makes. The number turns red past the limit. */
+     *  in kilometers, the same choice the phone makes. Your speed is blue and the limit red; your
+     *  speed turns red past the limit. */
     private fun drawSpeed(canvas: Canvas) {
         val imperial = app.vela.ui.Units.imperial.value
         val v = if (imperial) speedMps * 2.236936 else speedMps * 3.6
@@ -1078,6 +1080,8 @@ class CarMapRenderer(
         // Without it the limit sign takes the badge's corner.
         val badge = app.vela.ui.CarSpeed.on.value
         if (badge) {
+            val limit = speedLimitKmh?.let { (if (imperial) it / 1.609344 else it).roundToInt() } ?: 0
+            badgeNum.color = if (limit > 0 && v > limit + (if (imperial) 3 else 5)) LIMIT_OVER else SPEED_BLUE
             canvas.drawRoundRect(RectF(cx - rad, cy - rad, cx + rad, cy + rad), 20f * k, 20f * k, badgeBg)
             canvas.drawText(num.toString(), cx, cy + 6f * k, badgeNum)
             canvas.drawText(unit, cx, cy + 30f * k, badgeUnit)
@@ -1086,7 +1090,6 @@ class CarMapRenderer(
         speedLimitKmh?.let { kmh ->
             val limit = (if (imperial) kmh / 1.609344 else kmh).roundToInt()
             if (limit <= 0) return
-            limitNum.color = if (v > limit + (if (imperial) 3 else 5)) LIMIT_OVER else LIMIT_INK
             val ly = cy
             if (imperial) {
                 val hw = 34f * k; val hh = 44f * k

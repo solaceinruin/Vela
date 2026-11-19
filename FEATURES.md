@@ -150,7 +150,7 @@ What Vela Maps does today, one line per feature. How each one works is in [SPEC.
 - The route line is colored by congestion. "Road behind you" keeps the driven part in gray.
 - The route line is drawn down the middle of the map's roads, where Google's own line would sit a
   lane to one side.
-- Your speed and the posted limit. "Show speed and speed limit" hides them.
+- Your speed in blue and the posted limit in red. "Show speed and speed limit" hides them.
 - Timed limits follow the clock, such as 100 by day and 130 at night on Dutch motorways. Online
   only for now.
 - "Road ahead bar" is a strip with the traffic, lights, stop signs, crossings and cameras still

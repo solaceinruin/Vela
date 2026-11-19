@@ -96,7 +96,8 @@ its own layers on top:
   and dark red.
 - Dots for lights, stop signs, level crossings, speed humps and cameras, from zoom 13.5.
 - The speed badge and the limit sign while navigating and in drive mode, unless Settings >
-  Navigation "Show speed and speed limit" is off.
+  Navigation "Show speed and speed limit" is off. Your speed is blue and the limit red,
+  as on the phone.
 - One credit line, `© OpenStreetMap`. `QuietSnapshotter` overrides the library's overlay, which
   prints every tile source's attribution and stays when the logo is turned off.
 
